@@ -4,6 +4,21 @@
 
 ## User settings
 xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+## Xcode generated files
+DerivedData/
+build/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
 
 ## Obj-C/Swift specific
 *.hmap
@@ -30,6 +45,7 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
+.swiftpm/
 
 # CocoaPods
 #
@@ -60,3 +76,20 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Tuist
+.tuist-bin/
+.tuist-cache/
+Tuist/Dependencies/
+
+# Mint
+.mint/
+
+# Local environment / secrets
+.env
+.env.*
+*.mobileprovision
+*.orig
+
+# macOS
+.DS_Store
