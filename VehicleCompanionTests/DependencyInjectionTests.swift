@@ -8,7 +8,7 @@ struct DependencyInjectionTests {
         registerDependencies()
 
         let apiClient = ServiceLocator.resolve(APIClient.self)
-        let httpClient = ServiceLocator.resolve(HTTPClientType.self)
+        let httpClient = ServiceLocator.resolve(HTTPClient.self)
 
         #expect(apiClient != nil)
         #expect(httpClient != nil)

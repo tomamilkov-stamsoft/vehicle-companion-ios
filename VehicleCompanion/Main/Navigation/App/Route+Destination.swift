@@ -8,6 +8,8 @@ extension Route {
             GarageScreen()
         case .places:
             PlacesScreen()
+        case let .garageVehicleForm(vehicleID):
+            GarageVehicleFormScreen(vehicleID: vehicleID)
         }
     }
 }
