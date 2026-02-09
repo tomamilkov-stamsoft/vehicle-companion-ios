@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import VehicleCompanion
 
-private struct MockHTTPClient: HTTPClientType {
+private struct MockHTTPClient: HTTPClient {
     let result: Result<(data: Data, response: HTTPURLResponse), Error>
 
     func perform(_ request: HTTPRequest) async throws -> (data: Data, response: HTTPURLResponse) {
@@ -10,7 +10,7 @@ private struct MockHTTPClient: HTTPClientType {
     }
 }
 
-private final class CapturingHTTPClient: HTTPClientType {
+private final class CapturingHTTPClient: HTTPClient {
     var lastRequest: HTTPRequest?
     var responseData: Data = Data("{}".utf8)
     var statusCode: Int = 200

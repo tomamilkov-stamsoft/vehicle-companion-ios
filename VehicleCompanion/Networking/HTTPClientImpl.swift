@@ -1,7 +1,7 @@
 import Alamofire
 import Foundation
 
-struct AlamofireHTTPClient: HTTPClientType {
+struct HTTPClientImpl: HTTPClient {
     private let session: Session
 
     init(session: Session = .default) {

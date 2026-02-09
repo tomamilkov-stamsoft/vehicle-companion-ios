@@ -1,13 +1,13 @@
 import Foundation
 
 struct APIClient {
-    private let httpClient: HTTPClientType
+    private let httpClient: HTTPClient
     private let configuration: APIConfiguration
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
     init(
-        httpClient: HTTPClientType,
+        httpClient: HTTPClient,
         configuration: APIConfiguration,
         decoder: JSONDecoder = JSONDecoder(),
         encoder: JSONEncoder = JSONEncoder()
