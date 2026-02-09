@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C9BE6A22F39E65200D0D7C7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0C9BE6A12F39E65200D0D7C7 /* Alamofire */; };
+		0C9BE6D52F39EA0900D0D7C7 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 0C9BE6D42F39EA0900D0D7C7 /* Swinject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C9BE6A22F39E65200D0D7C7 /* Alamofire in Frameworks */,
+				0C9BE6D52F39EA0900D0D7C7 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,7 @@
 			name = VehicleCompanion;
 			packageProductDependencies = (
 				0C9BE6A12F39E65200D0D7C7 /* Alamofire */,
+				0C9BE6D42F39EA0900D0D7C7 /* Swinject */,
 			);
 			productName = VehicleCompanion;
 			productReference = 0C9BE57E2F39D4D800D0D7C7 /* VehicleCompanion.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0C9BE69C2F39E24B00D0D7C7 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				0C9BE6D32F39EA0900D0D7C7 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0C9BE57F2F39D4D800D0D7C7 /* Products */;
@@ -591,6 +595,14 @@
 				version = 5.11.1;
 			};
 		};
+		0C9BE6D32F39EA0900D0D7C7 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -598,6 +610,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C9BE69C2F39E24B00D0D7C7 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		0C9BE6D42F39EA0900D0D7C7 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C9BE6D32F39EA0900D0D7C7 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

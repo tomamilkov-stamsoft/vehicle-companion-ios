@@ -10,6 +10,10 @@ import SwiftData
 
 @main
 struct VehicleCompanionApp: App {
+    init() {
+        registerDependencies()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
