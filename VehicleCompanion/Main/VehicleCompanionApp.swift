@@ -7,6 +7,8 @@ struct VehicleCompanionApp: App {
     private let modelContainer: ModelContainer
 
     init() {
+        URLCacheConfigurator.configureDefault()
+
         registerDependencies()
         modelContainer = ServiceLocator.required(ModelContainer.self)
     }

@@ -1,0 +1,88 @@
+import Foundation
+
+@MainActor
+@Observable
+final class PlacesViewModel {
+    enum SortOption: String, CaseIterable, Identifiable {
+        case rating = "Rating"
+        case name = "Name"
+
+        var id: String { rawValue }
+    }
+
+    private let discoverPOIsUseCase: DiscoverPOIsUseCase
+    private let getSavedPOIsUseCase: GetSavedPOIsUseCase
+    private let toggleSavedPOIUseCase: ToggleSavedPOIUseCase
+
+    private(set) var places: [POI] = []
+    private(set) var savedPOIs: [SavedPOI] = []
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
+    var sortOption: SortOption = .rating
+    var favoritesOnly = false
+
+    init(
+        discoverPOIsUseCase: DiscoverPOIsUseCase,
+        getSavedPOIsUseCase: GetSavedPOIsUseCase,
+        toggleSavedPOIUseCase: ToggleSavedPOIUseCase
+    ) {
+        self.discoverPOIsUseCase = discoverPOIsUseCase
+        self.getSavedPOIsUseCase = getSavedPOIsUseCase
+        self.toggleSavedPOIUseCase = toggleSavedPOIUseCase
+    }
+
+    var displayPOIs: [POI] {
+        let source: [POI]
+        if favoritesOnly {
+            source = savedPOIs.map { $0.asPOI() }
+        } else {
+            source = places
+        }
+
+        switch sortOption {
+        case .rating:
+            return source.sorted {
+                let lhs = $0.rating ?? -1
+                let rhs = $1.rating ?? -1
+                if lhs == rhs { return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+                return lhs > rhs
+            }
+        case .name:
+            return source.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        }
+    }
+
+    func load() async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            savedPOIs = try getSavedPOIsUseCase.execute()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+
+        do {
+            places = try await discoverPOIsUseCase.execute(in: .candidateArea, pageSize: 50)
+        } catch {
+            if savedPOIs.isEmpty {
+                errorMessage = error.localizedDescription
+            }
+        }
+
+        isLoading = false
+    }
+
+    func isSaved(_ poi: POI) -> Bool {
+        savedPOIs.contains(where: { $0.id == poi.id })
+    }
+
+    func toggleSaved(_ poi: POI) {
+        do {
+            try toggleSavedPOIUseCase.execute(poi)
+            savedPOIs = try getSavedPOIsUseCase.execute()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+}

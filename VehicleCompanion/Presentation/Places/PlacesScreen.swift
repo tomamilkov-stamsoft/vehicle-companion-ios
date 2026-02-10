@@ -1,23 +1,61 @@
 import SwiftUI
 
 struct PlacesScreen: View {
+    @State private var viewModel = ServiceLocator.required(PlacesViewModel.self)
+
     var body: some View {
+        @Bindable var bindableViewModel = viewModel
+
         VStack(spacing: 12) {
-            Image(systemName: "map.fill")
-                .font(.system(size: 44))
-                .foregroundStyle(.green)
+            HStack {
+                Picker("Sort", selection: $bindableViewModel.sortOption) {
+                    ForEach(PlacesViewModel.SortOption.allCases) { option in
+                        Text(option.rawValue).tag(option)
+                    }
+                }
+                .pickerStyle(.segmented)
 
-            Text("Places")
-                .font(.title2)
-                .fontWeight(.semibold)
+                Toggle("Favorites", isOn: $bindableViewModel.favoritesOnly)
+                    .toggleStyle(.switch)
+                    .labelsHidden()
+                    .accessibilityLabel("Show favorites only")
+            }
+            .padding(.horizontal)
 
-            Text("Roadtrippers results will appear here.")
-                .font(.body)
-                .foregroundStyle(.secondary)
+            if viewModel.isLoading {
+                ProgressView("Loading places...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if let errorMessage = viewModel.errorMessage, viewModel.displayPOIs.isEmpty {
+                ContentUnavailableView(
+                    "Could not load places",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text(errorMessage)
+                )
+            } else if viewModel.displayPOIs.isEmpty {
+                ContentUnavailableView(
+                    "No places available",
+                    systemImage: "mappin.slash",
+                    description: Text("Try again later or disable Favorites only.")
+                )
+            } else {
+                List(viewModel.displayPOIs) { poi in
+                    NavigationLink {
+                        PlacesDetailScreen(
+                            poi: poi,
+                            isSaved: viewModel.isSaved(poi),
+                            onToggleSaved: { viewModel.toggleSaved(poi) }
+                        )
+                    } label: {
+                        POIRowView(poi: poi, isSaved: viewModel.isSaved(poi))
+                    }
+                }
+                .listStyle(.plain)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
         .navigationTitle("Places")
+        .task {
+            await viewModel.load()
+        }
     }
 }
 

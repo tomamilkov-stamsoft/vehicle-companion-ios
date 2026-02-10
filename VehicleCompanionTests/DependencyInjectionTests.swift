@@ -7,7 +7,7 @@ struct DependencyInjectionTests {
     func resolvesCoreDependenciesFromServiceLocator() {
         registerDependencies()
 
-        let apiClient = ServiceLocator.resolve(APIClient.self)
+        let apiClient = ServiceLocator.resolve(APIClient.self, name: DIName.roadtrippersAPIClient.rawValue)
         let httpClient = ServiceLocator.resolve(HTTPClient.self)
 
         #expect(apiClient != nil)
