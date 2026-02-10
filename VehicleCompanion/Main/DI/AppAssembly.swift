@@ -74,6 +74,14 @@ struct AppAssembly: Assembly {
         container.register(PlacesViewModel.self) { resolver in
             PlacesViewModel(
                 discoverPOIsUseCase: resolver.required(DiscoverPOIsUseCase.self),
+                getSavedPOIsUseCase: resolver.required(GetSavedPOIsUseCase.self)
+            )
+        }
+        .inObjectScope(.transient)
+
+        container.register(PlacesDetailViewModel.self) { resolver, poi in
+            PlacesDetailViewModel(
+                poi: poi,
                 getSavedPOIsUseCase: resolver.required(GetSavedPOIsUseCase.self),
                 toggleSavedPOIUseCase: resolver.required(ToggleSavedPOIUseCase.self)
             )

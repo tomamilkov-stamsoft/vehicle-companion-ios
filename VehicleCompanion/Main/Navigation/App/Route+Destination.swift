@@ -10,6 +10,8 @@ extension Route {
             PlacesScreen()
         case let .garageVehicleForm(vehicleID):
             GarageVehicleFormScreen(vehicleID: vehicleID)
+        case let .placeDetail(poi):
+            PlacesDetailScreen(poi: poi)
         }
     }
 }

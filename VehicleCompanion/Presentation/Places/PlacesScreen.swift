@@ -1,7 +1,16 @@
 import SwiftUI
 
 struct PlacesScreen: View {
+    private enum PlacesViewMode: String, CaseIterable, Identifiable {
+        case list = "List"
+        case map = "Map"
+
+        var id: String { rawValue }
+    }
+
     @State private var viewModel = ServiceLocator.required(PlacesViewModel.self)
+    @State private var viewMode: PlacesViewMode = .list
+    @EnvironmentObject private var router: AppRouter
 
     var body: some View {
         @Bindable var bindableViewModel = viewModel
@@ -31,6 +40,14 @@ struct PlacesScreen: View {
             }
             .padding(.horizontal)
 
+            Picker("View", selection: $viewMode) {
+                ForEach(PlacesViewMode.allCases) { mode in
+                    Text(mode.rawValue).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+
             if viewModel.isLoading {
                 ProgressView("Loading places...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -53,22 +70,29 @@ struct PlacesScreen: View {
                     description: Text("Try again later or disable Favorites only.")
                 )
             } else {
-                List(viewModel.displayPOIs) { poi in
-                    NavigationLink {
-                        PlacesDetailScreen(
-                            poi: poi,
-                            isSaved: viewModel.isSaved(poi),
-                            onToggleSaved: { viewModel.toggleSaved(poi) }
-                        )
-                    } label: {
-                        POIRowView(poi: poi, isSaved: viewModel.isSaved(poi))
+                if viewMode == .list {
+                    List(viewModel.displayPOIs) { poi in
+                        Button {
+                            viewModel.didSelectPOI(poi)
+                        } label: {
+                            POIRowView(poi: poi, isSaved: viewModel.isSaved(poi))
+                        }
+                        .buttonStyle(.plain)
                     }
+                    .listStyle(.plain)
+                } else {
+                    PlacesMapView(
+                        pois: viewModel.displayPOIs,
+                        isSaved: viewModel.isSaved,
+                        onDetail: viewModel.didSelectPOI
+                    )
+                    .padding(.horizontal)
                 }
-                .listStyle(.plain)
             }
         }
         .navigationTitle("Places")
         .task {
+            viewModel.router = router
             await viewModel.load()
         }
     }

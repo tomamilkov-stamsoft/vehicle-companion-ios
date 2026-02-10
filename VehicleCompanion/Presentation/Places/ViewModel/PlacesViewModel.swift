@@ -12,7 +12,7 @@ final class PlacesViewModel {
 
     private let discoverPOIsUseCase: DiscoverPOIsUseCase
     private let getSavedPOIsUseCase: GetSavedPOIsUseCase
-    private let toggleSavedPOIUseCase: ToggleSavedPOIUseCase
+    weak var router: AppRouter?
 
     private(set) var places: [POI] = []
     private(set) var savedPOIs: [SavedPOI] = []
@@ -23,12 +23,10 @@ final class PlacesViewModel {
 
     init(
         discoverPOIsUseCase: DiscoverPOIsUseCase,
-        getSavedPOIsUseCase: GetSavedPOIsUseCase,
-        toggleSavedPOIUseCase: ToggleSavedPOIUseCase
+        getSavedPOIsUseCase: GetSavedPOIsUseCase
     ) {
         self.discoverPOIsUseCase = discoverPOIsUseCase
         self.getSavedPOIsUseCase = getSavedPOIsUseCase
-        self.toggleSavedPOIUseCase = toggleSavedPOIUseCase
     }
 
     var displayPOIs: [POI] {
@@ -77,12 +75,7 @@ final class PlacesViewModel {
         savedPOIs.contains(where: { $0.id == poi.id })
     }
 
-    func toggleSaved(_ poi: POI) {
-        do {
-            try toggleSavedPOIUseCase.execute(poi)
-            savedPOIs = try getSavedPOIsUseCase.execute()
-        } catch {
-            errorMessage = UserErrorMessageMapper.message(for: error)
-        }
+    func didSelectPOI(_ poi: POI) {
+        router?.push(.placeDetail(poi: poi))
     }
 }
