@@ -49,6 +49,19 @@ struct PlacesViewModelTests {
     @MainActor
     func sortingAndFavoritesFilteringWorks() async {
         let repository = SavedPOIRepositoryMock()
+        repository.saved = [
+            SavedPOI(
+                id: 2,
+                name: "Aquarium",
+                url: nil,
+                category: "Fun",
+                rating: 5,
+                imageURL: nil,
+                longitude: 2,
+                latitude: 2,
+                savedAt: Date()
+            )
+        ]
         let discover = DiscoverPOIsUseCaseMock(result: .success([
             POI(id: 1, name: "Zoo", url: nil, category: "Fun", rating: 3, imageURL: nil, longitude: 1, latitude: 1),
             POI(id: 2, name: "Aquarium", url: nil, category: "Fun", rating: 5, imageURL: nil, longitude: 2, latitude: 2)
@@ -56,8 +69,7 @@ struct PlacesViewModelTests {
 
         let viewModel = PlacesViewModel(
             discoverPOIsUseCase: discover,
-            getSavedPOIsUseCase: GetSavedPOIsUseCaseImpl(repository: repository),
-            toggleSavedPOIUseCase: ToggleSavedPOIUseCaseImpl(repository: repository)
+            getSavedPOIsUseCase: GetSavedPOIsUseCaseImpl(repository: repository)
         )
 
         await viewModel.load()
@@ -66,9 +78,9 @@ struct PlacesViewModelTests {
         viewModel.sortOption = .name
         #expect(viewModel.displayPOIs.map(\.id) == [2, 1])
 
-        viewModel.toggleSaved(viewModel.displayPOIs[0])
         viewModel.favoritesOnly = true
         #expect(viewModel.displayPOIs.count == 1)
+        #expect(viewModel.displayPOIs.map(\.id) == [2])
     }
 
     @Test
@@ -79,8 +91,7 @@ struct PlacesViewModelTests {
         let repository = SavedPOIRepositoryMock()
         let viewModel = PlacesViewModel(
             discoverPOIsUseCase: DiscoverPOIsUseCaseMock(result: .failure(DummyError.failed)),
-            getSavedPOIsUseCase: GetSavedPOIsUseCaseImpl(repository: repository),
-            toggleSavedPOIUseCase: ToggleSavedPOIUseCaseImpl(repository: repository)
+            getSavedPOIsUseCase: GetSavedPOIsUseCaseImpl(repository: repository)
         )
 
         await viewModel.load()
