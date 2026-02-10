@@ -12,14 +12,14 @@ struct NetworkingAssembly: Assembly {
         }
         .inObjectScope(.container)
 
-        container.register(HTTPClientType.self) { _ in
-            AlamofireHTTPClient()
+        container.register(HTTPClient.self) { _ in
+            HTTPClientImpl()
         }
         .inObjectScope(.container)
 
         container.register(APIClient.self) { resolver in
             APIClient(
-                httpClient: resolver.required(HTTPClientType.self),
+                httpClient: resolver.required(HTTPClient.self),
                 configuration: resolver.required(APIConfiguration.self),
                 decoder: resolver.required(JSONDecoder.self),
                 encoder: resolver.required(JSONEncoder.self)

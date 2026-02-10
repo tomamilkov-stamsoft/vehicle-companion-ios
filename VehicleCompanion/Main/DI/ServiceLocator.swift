@@ -25,4 +25,17 @@ extension Resolver {
         }
         return service
     }
+
+    func required<Service, Arg1>(
+        _ serviceType: Service.Type,
+        argument: Arg1,
+        name: String? = nil,
+        file: StaticString = #fileID,
+        line: UInt = #line
+    ) -> Service {
+        guard let service = resolve(serviceType, name: name, argument: argument) else {
+            fatalError("Missing DI registration for \(serviceType) with argument \(Arg1.self) at \(file):\(line)")
+        }
+        return service
+    }
 }
