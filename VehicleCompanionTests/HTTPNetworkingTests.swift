@@ -43,6 +43,7 @@ private struct TestResponse: Decodable {
 
 struct HTTPNetworkingTests {
     @Test
+    @MainActor
     func requestBuildsURLAndHeaders() throws {
         let request = HTTPRequest(
             host: "api.example.com",
@@ -60,6 +61,7 @@ struct HTTPNetworkingTests {
     }
 
     @Test
+    @MainActor
     func mockClientCanReturnData() async throws {
         let payload = Data("{\"ok\":true}".utf8)
         let response = try #require(HTTPURLResponse(
@@ -70,7 +72,7 @@ struct HTTPNetworkingTests {
         ))
 
         let client = MockHTTPClient(result: .success((payload, response)))
-        let request = await HTTPRequest(host: "api.example.com", path: "/")
+        let request = HTTPRequest(host: "api.example.com", path: "/")
 
         let result = try await client.perform(request)
         #expect(result.data == payload)
@@ -78,11 +80,12 @@ struct HTTPNetworkingTests {
     }
 
     @Test
+    @MainActor
     func apiClientMergesDefaultsAndEndpointValues() async throws {
         let capturing = CapturingHTTPClient()
         capturing.responseData = Data("{\"ok\":true}".utf8)
 
-        let client = await APIClient(
+        let client = APIClient(
             httpClient: capturing,
             configuration: APIConfiguration(
                 host: "api.example.com",
@@ -112,11 +115,12 @@ struct HTTPNetworkingTests {
     }
 
     @Test
+    @MainActor
     func apiClientMapsDecodingError() async {
         let capturing = CapturingHTTPClient()
         capturing.responseData = Data("{\"unexpected\":true}".utf8)
 
-        let client = await APIClient(
+        let client = APIClient(
             httpClient: capturing,
             configuration: APIConfiguration(host: "api.example.com")
         )

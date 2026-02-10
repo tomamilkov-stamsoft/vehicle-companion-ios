@@ -1,6 +1,6 @@
 import Foundation
 
-struct POI: Identifiable, Equatable {
+struct POI: Identifiable, Hashable {
     let id: Int
     let name: String
     let url: URL?

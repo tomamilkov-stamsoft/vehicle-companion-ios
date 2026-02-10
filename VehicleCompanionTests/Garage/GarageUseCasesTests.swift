@@ -50,6 +50,7 @@ struct GarageUseCasesTests {
     }
 
     @Test
+    @MainActor
     func upsertAndDeleteUseCasesDelegateToRepository() throws {
         let repo = VehicleRepositorySpy()
         let vehicle = Vehicle(
