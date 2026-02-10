@@ -29,9 +29,13 @@ struct PlacesDetailScreen: View {
                 Text(poi.name)
                     .font(.title2)
                     .fontWeight(.semibold)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.8)
 
                 Text(poi.category)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
 
                 HStack(spacing: 4) {
                     ForEach(0..<5, id: \.self) { index in
