@@ -116,4 +116,3 @@ If given more time, the next priorities would be:
 2. Implement full Trips feature (domain/data/presentation + tests).
 3. Expand UI polish and accessibility pass across all screens and edge states.
 4. Add richer observability (structured logging for network/persistence failures).
-5. Add optional map mode for Places with clustering and improved pin interactions.
