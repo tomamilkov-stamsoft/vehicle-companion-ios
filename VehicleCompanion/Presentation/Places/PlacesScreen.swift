@@ -35,11 +35,17 @@ struct PlacesScreen: View {
                 ProgressView("Loading places...")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let errorMessage = viewModel.errorMessage, viewModel.displayPOIs.isEmpty {
-                ContentUnavailableView(
-                    "Could not load places",
-                    systemImage: "exclamationmark.triangle",
-                    description: Text(errorMessage)
-                )
+                VStack(spacing: 12) {
+                    ContentUnavailableView(
+                        "Could not load places",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text(errorMessage)
+                    )
+                    Button("Retry") {
+                        Task { await viewModel.load() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
             } else if viewModel.displayPOIs.isEmpty {
                 ContentUnavailableView(
                     "No places available",

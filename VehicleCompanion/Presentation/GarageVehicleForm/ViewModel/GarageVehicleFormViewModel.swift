@@ -43,7 +43,7 @@ final class GarageVehicleFormViewModel {
             errorMessage = nil
             router?.dismiss()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = UserErrorMessageMapper.message(for: error)
         }
     }
 

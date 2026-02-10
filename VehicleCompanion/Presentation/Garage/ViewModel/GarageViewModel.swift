@@ -51,7 +51,7 @@ final class GarageViewModel {
                 errorMessage = nil
             }
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = UserErrorMessageMapper.message(for: error)
         }
     }
 
@@ -61,7 +61,7 @@ final class GarageViewModel {
             router?.dismiss()
             loadVehicles()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = UserErrorMessageMapper.message(for: error)
         }
     }
 
@@ -75,7 +75,7 @@ final class GarageViewModel {
             do {
                 try deleteVehicleUseCase.execute(id: id)
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = UserErrorMessageMapper.message(for: error)
             }
         }
         loadVehicles()

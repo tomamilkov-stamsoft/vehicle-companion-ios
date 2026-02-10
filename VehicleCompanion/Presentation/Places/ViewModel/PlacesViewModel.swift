@@ -59,14 +59,14 @@ final class PlacesViewModel {
         do {
             savedPOIs = try getSavedPOIsUseCase.execute()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = UserErrorMessageMapper.message(for: error)
         }
 
         do {
             places = try await discoverPOIsUseCase.execute(in: .candidateArea, pageSize: 50)
         } catch {
-            if savedPOIs.isEmpty {
-                errorMessage = error.localizedDescription
+            if places.isEmpty {
+                errorMessage = UserErrorMessageMapper.message(for: error)
             }
         }
 
@@ -82,7 +82,7 @@ final class PlacesViewModel {
             try toggleSavedPOIUseCase.execute(poi)
             savedPOIs = try getSavedPOIsUseCase.execute()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = UserErrorMessageMapper.message(for: error)
         }
     }
 }
