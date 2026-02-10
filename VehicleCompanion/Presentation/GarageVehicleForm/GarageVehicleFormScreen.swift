@@ -54,7 +54,7 @@ struct GarageVehicleFormScreen: View {
             TextField("Nickname", text: $bindableViewModel.formModel.nickname)
             TextField("Make", text: $bindableViewModel.formModel.make)
             TextField("Model", text: $bindableViewModel.formModel.model)
-            Stepper("Year: \(viewModel.formModel.year)", value: $bindableViewModel.formModel.year, in: 1886...2100)
+            Stepper("Year: \(String(viewModel.formModel.year))", value: $bindableViewModel.formModel.year, in: 1886...2100)
             TextField("VIN", text: $bindableViewModel.formModel.vin)
 
             Picker("Fuel Type", selection: $bindableViewModel.formModel.fuelType) {

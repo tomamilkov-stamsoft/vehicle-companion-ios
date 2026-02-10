@@ -2,6 +2,7 @@ import SwiftUI
 
 struct VehicleRowView: View {
     let vehicle: Vehicle
+    private var yearText: String { String(vehicle.year) }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -10,13 +11,18 @@ struct VehicleRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(vehicle.nickname)
                     .font(.headline)
-                Text("\(vehicle.make) \(vehicle.model) • \(vehicle.year)")
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+                Text("\(vehicle.make) \(vehicle.model) • \(yearText)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(vehicle.nickname), \(vehicle.make) \(vehicle.model), \(vehicle.year)")
+        .accessibilityLabel("\(vehicle.nickname), \(vehicle.make) \(vehicle.model), year \(yearText)")
+        .accessibilityHint("Tap to edit vehicle")
     }
 
     @ViewBuilder

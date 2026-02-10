@@ -22,10 +22,13 @@ struct POIRowView: View {
                 Text(poi.name)
                     .font(.headline)
                     .lineLimit(2)
+                    .minimumScaleFactor(0.85)
 
                 Text(poi.category)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
 
                 HStack(spacing: 2) {
                     ForEach(0..<5, id: \.self) { index in
@@ -48,5 +51,7 @@ struct POIRowView: View {
         .padding(.vertical, 4)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(poi.name), \(poi.category)")
+        .accessibilityValue("Rating \(roundedRating) out of 5\(isSaved ? ", saved" : "")")
+        .accessibilityHint("Tap to open place details")
     }
 }

@@ -7,18 +7,27 @@ struct PlacesScreen: View {
         @Bindable var bindableViewModel = viewModel
 
         VStack(spacing: 12) {
-            HStack {
-                Picker("Sort", selection: $bindableViewModel.sortOption) {
+            HStack(alignment: .center, spacing: 12) {
+                Menu {
                     ForEach(PlacesViewModel.SortOption.allCases) { option in
-                        Text(option.rawValue).tag(option)
+                        Button {
+                            bindableViewModel.sortOption = option
+                        } label: {
+                            if bindableViewModel.sortOption == option {
+                                Label(option.rawValue, systemImage: "checkmark")
+                            } else {
+                                Text(option.rawValue)
+                            }
+                        }
                     }
+                } label: {
+                    Label("Sort: \(bindableViewModel.sortOption.rawValue)", systemImage: "arrow.up.arrow.down")
                 }
-                .pickerStyle(.segmented)
+                .accessibilityLabel("Sort places")
+                .accessibilityValue(bindableViewModel.sortOption.rawValue)
 
                 Toggle("Favorites", isOn: $bindableViewModel.favoritesOnly)
                     .toggleStyle(.switch)
-                    .labelsHidden()
-                    .accessibilityLabel("Show favorites only")
             }
             .padding(.horizontal)
 
