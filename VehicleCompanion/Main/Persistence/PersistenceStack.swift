@@ -8,7 +8,10 @@ final class PersistenceStack {
     init() {
         do {
             let schema = Schema([
-                VehicleRecord.self
+                VehicleRecord.self,
+                SavedPOIRecord.self,
+                MaintenanceItemRecord.self,
+                TripRecord.self
             ])
             let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             container = try ModelContainer(for: schema, configurations: [configuration])
