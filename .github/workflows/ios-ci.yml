@@ -30,11 +30,3 @@ jobs:
             -skip-testing:VehicleCompanionUITests/VehicleCompanionUITestsLaunchTests/testLaunch \
             -skip-testing:VehicleCompanionUITests/VehicleCompanionUITests/testLaunchPerformance \
             CODE_SIGNING_ALLOWED=NO
-
-      - name: Upload test result bundle
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: TestResults-xcresult
-          path: TestResults.xcresult
-          if-no-files-found: ignore
